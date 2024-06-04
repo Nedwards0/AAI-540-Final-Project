@@ -1,2 +1,4 @@
 UCF-101/
 Images/
+*.pyc
+.ipynb_checkpoints/Precoressing-checkpoint.ipynb

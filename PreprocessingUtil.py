@@ -4,7 +4,6 @@ from pathlib import Path
 import datetime
 import json
 
-Version = '0.0.0'
 
 class DataFile():
     def __init__(self, Path: str, Class: str, video : str):
@@ -13,27 +12,31 @@ class DataFile():
         self.video = video
 
 class Proccessor:
-
+    Version = '0.0.0'
+    
     def __init__(self, Path: str):
         self.Dataset_Path =  Path
         self.classes = os.listdir(self.Dataset_Path)
     def getClasses(self):
         return(self.classes)
     def getVideosForClass(self, className):
-        if(className in classes):
+        if(className in self.classes):
             folder = self.Dataset_Path + "/" + className
             files = os.listdir(folder)
             Datafiles = [DataFile((self.Dataset_Path + "/" + className + "/" + file), className, file) for file in files]
             return Datafiles
         else:
             print("This is not a class in the dataset")
-    def convertVideoToImages(self, datafile: DataFile, Generate_Label_Info_As_Json=True, Export_Dir = "Images"):
+    def convertVideoToImages(self, datafile: DataFile, Generate_Label_Info_As_Json=True, Export_Dir = "Images", split_by_video=True):
         print(datafile.Path)
         vidcap = cv2.VideoCapture(datafile.Path)
         success,image = vidcap.read()
         count = 0
         success = True
-        Folder_write_location =  Export_Dir + "/" + datafile.Class + "/" + datafile.video + "/"
+        if(split_by_video):
+            Folder_write_location =  Export_Dir + "/" + datafile.Class + "/" + datafile.video + "/"
+        else:
+            Folder_write_location =  Export_Dir + "/" + datafile.Class + "/"
         Path(Folder_write_location).mkdir(parents=True, exist_ok=True)
         while success:        
             cv2.imwrite(Folder_write_location + "frame%d.jpg" % count, image)
@@ -43,7 +46,7 @@ class Proccessor:
                 json_to_write={
                     'class':datafile.Class,
                     'video':datafile.video,
-                    'processorVersion':Version,
+                    'processorVersion':self.Version,
                     'procesedWhen': str(datetime.datetime.now())
                 }
                 with open( (Folder_write_location + "metaData%d.json" % count), "w", encoding='utf-8') as outfile:
