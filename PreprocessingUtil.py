@@ -28,7 +28,6 @@ class Proccessor:
         else:
             print("This is not a class in the dataset")
     def convertVideoToImages(self, datafile: DataFile, Generate_Label_Info_As_Json=True, Export_Dir = "Images", split_by_video=True):
-        print(datafile.Path)
         vidcap = cv2.VideoCapture(datafile.Path)
         success,image = vidcap.read()
         count = 0
