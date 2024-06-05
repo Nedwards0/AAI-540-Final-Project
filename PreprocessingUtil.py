@@ -3,7 +3,6 @@ import cv2
 from pathlib import Path
 import datetime
 import json
-import imageio
 
 class DataFile():
     def __init__(self, Path: str, Class: str, video : str):
