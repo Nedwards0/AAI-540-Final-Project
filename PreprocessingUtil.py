@@ -38,7 +38,7 @@ class Proccessor:
             Folder_write_location =  Export_Dir + "/" + datafile.Class + "/"
         Path(Folder_write_location).mkdir(parents=True, exist_ok=True)
         while success:        
-            cv2.imwrite(Folder_write_location + "frame%d.jpg" % count, image)
+            cv2.imwrite(Folder_write_location + datafile.video  + "frame%d.jpg" % count, image)
             success,image = vidcap.read()
             count += 1
             if(Generate_Label_Info_As_Json):
@@ -48,7 +48,7 @@ class Proccessor:
                     'processorVersion':self.Version,
                     'procesedWhen': str(datetime.datetime.now())
                 }
-                with open( (Folder_write_location + "metaData%d.json" % count), "w", encoding='utf-8') as outfile:
+                with open( (Folder_write_location + datafile.video + "metaData%d.json" % count), "w", encoding='utf-8') as outfile:
                     json.dump(json_to_write, outfile, ensure_ascii=False, indent=4)
         return 1
 
