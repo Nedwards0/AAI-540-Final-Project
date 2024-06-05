@@ -3,7 +3,7 @@ import cv2
 from pathlib import Path
 import datetime
 import json
-
+import imageio
 
 class DataFile():
     def __init__(self, Path: str, Class: str, video : str):
@@ -27,7 +27,7 @@ class Proccessor:
             return Datafiles
         else:
             print("This is not a class in the dataset")
-    def convertVideoToImages(self, datafile: DataFile, Generate_Label_Info_As_Json=True, Export_Dir = "Images", split_by_video=True):
+    def convertVideoToImages(self, datafile: DataFile, Generate_Label_Info_As_Json=True, Export_Dir = "Images", split_by_video=True, freq = 30, transform=False, transform_amount = .25):
         vidcap = cv2.VideoCapture(datafile.Path)
         success,image = vidcap.read()
         count = 0
@@ -37,19 +37,31 @@ class Proccessor:
         else:
             Folder_write_location =  Export_Dir + "/" + datafile.Class + "/"
         Path(Folder_write_location).mkdir(parents=True, exist_ok=True)
-        while success:        
-            cv2.imwrite(Folder_write_location + datafile.video  + "frame%d.jpg" % count, image)
+        freq_count = 0
+        frames = 0
+        while success:
+            frames +=1
+            freq_count+=1
+            if(freq_count == freq):
+                freq_count = 0
+                if(transform):
+                    image = cv2.resize(image, (0,0), fx = transform_amount, fy = transform_amount)
+                cv2.imwrite(Folder_write_location + datafile.video  + "frame%d.jpg" % count, image , [int(cv2.IMWRITE_JPEG_QUALITY), 75])
+                if(Generate_Label_Info_As_Json):
+                    json_to_write={
+                        'class':datafile.Class,
+                        'video':datafile.video,
+                        'processorVersion':self.Version,
+                        'procesedWhen': str(datetime.datetime.now()),
+                        'Sampling Frequency' : freq,
+                        'transform Data' : transform,
+                        'transform Amount': transform_amount
+                    }
+                    with open( (Folder_write_location + datafile.video + "metaData%d.json" % count), "w", encoding='utf-8') as outfile:
+                        json.dump(json_to_write, outfile, ensure_ascii=False, indent=4)
+                count+=1
             success,image = vidcap.read()
-            count += 1
-            if(Generate_Label_Info_As_Json):
-                json_to_write={
-                    'class':datafile.Class,
-                    'video':datafile.video,
-                    'processorVersion':self.Version,
-                    'procesedWhen': str(datetime.datetime.now())
-                }
-                with open( (Folder_write_location + datafile.video + "metaData%d.json" % count), "w", encoding='utf-8') as outfile:
-                    json.dump(json_to_write, outfile, ensure_ascii=False, indent=4)
+        #print("Finished Video" + datafile.video + " Frames : " + str(frames) + " Images : " + str(count) )
         return 1
 
 if __name__ == "__main__":
