@@ -68,15 +68,15 @@ if __name__ == "__main__":
 
     # This is Testing code not meant to be used in producation
     print("Starting Test")
-    process = Proccessor("UCF-101") # Assumes Folder is located at same level as code.
+    process = Proccessor("UCF-PipeLine Tester") # Assumes Folder is located at same level as code.
     classes = process.getClasses()
-    class_count = 101
+    class_count = 3
     assert (len(classes) ==  class_count) #Verifys Right amount of classes in dataset. Hard coded 
-    assert(len(process.getVideosForClass(classes[0])) == 145)
+    assert(len(process.getVideosForClass(classes[0])) == 1)
     total_vid_count = 0
     for item in classes:
         total_vid_count += len(process.getVideosForClass(item))
-    toal_video = 13320
+    toal_video = 3
     assert(total_vid_count == toal_video)
     assert(process.convertVideoToImages(process.getVideosForClass(classes[0])[0]))
 
