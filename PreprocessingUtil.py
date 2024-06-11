@@ -49,9 +49,9 @@ class Proccessor:
                     f = open("test.lst", "a")
                     f1 = open("train.lst", "a")
                     if(random.random() <= .8):
-                        f.write(str(self.count) + "\t" + str(self.classes.index(datafile.Class)) + "\t" + datafile.Class + "/" + datafile.video + "\n")
-                    else:
                         f1.write(str(self.count) + "\t" + str(self.classes.index(datafile.Class)) + "\t" + datafile.Class + "/" + datafile.video + "\n")
+                    else:
+                        f.write(str(self.count) + "\t" + str(self.classes.index(datafile.Class)) + "\t" + datafile.Class + "/" + datafile.video + "\n")
                     self.count += 1
                     f1.close()
                     f.close()
