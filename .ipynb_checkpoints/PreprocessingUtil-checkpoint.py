@@ -48,7 +48,6 @@ class Proccessor:
                 if(generate_lst):
                     f = open("test.lst", "a")
                     f.write(str(self.count) + "\t" + str(self.classes.index(datafile.Class)) + "\t" + datafile.Class + "/" + datafile.video + "\n")
-                    self.count += 1
                     f.close()
                 if(transform):
                     image = cv2.resize(image, (0,0), fx = transform_amount, fy = transform_amount)
