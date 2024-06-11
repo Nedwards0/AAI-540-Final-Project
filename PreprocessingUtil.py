@@ -3,7 +3,7 @@ import cv2
 from pathlib import Path
 import datetime
 import json
-
+import random 
 class DataFile():
     def __init__(self, Path: str, Class: str, video : str):
         self.Path = Path
@@ -47,8 +47,13 @@ class Proccessor:
                 freq_count = 0
                 if(generate_lst):
                     f = open("test.lst", "a")
-                    f.write(str(self.count) + "\t" + str(self.classes.index(datafile.Class)) + "\t" + datafile.Class + "/" + datafile.video + "\n")
+                    f1 = open("train.lst", "a")
+                    if(random.random() <= .8):
+                        f.write(str(self.count) + "\t" + str(self.classes.index(datafile.Class)) + "\t" + datafile.Class + "/" + datafile.video + "\n")
+                    else:
+                        f1.write(str(self.count) + "\t" + str(self.classes.index(datafile.Class)) + "\t" + datafile.Class + "/" + datafile.video + "\n")
                     self.count += 1
+                    f1.close()
                     f.close()
                 if(transform):
                     image = cv2.resize(image, (0,0), fx = transform_amount, fy = transform_amount)
