@@ -6,4 +6,3 @@ Authors:
 - Navid Aghaebrahim
 - Nathan Edwards
 
-Business Name: HR Breakthrough AI
