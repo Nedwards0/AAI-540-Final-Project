@@ -1,0 +1,17 @@
+version: 0.2
+phases:
+  install:
+    commands:
+      - echo Installing dependencies
+      - pip install -r requirements.txt
+  pre_build:
+    commands:
+      - echo Running tests
+      - python test.py
+  build:
+    commands:
+      - echo Training model
+      - python train.py
+  post_build:
+    commands:
+      - echo Build completed on `date`
