@@ -10,7 +10,7 @@ will be to predict the price.
   - Base Model Training
   - Batch Transform
   - Base Model Uploading to sagemaker
-- [Deploy](Deploy.ipynb)
+- [Deploy](Deploy_Final.ipynb)
   - Deploy sagemaker model endpoint
   - Create Monitor
   - Create CI/CD
